@@ -1,4 +1,8 @@
-# import os
+import os
 
-# class Config:
-# SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
+# config.py
+class Config:
+    SECRET_KEY = 'your-secret-key'
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///superpower.db'  
+    SQLALCHEMY_TRACK_MODIFICATIONS = False  
+
