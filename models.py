@@ -1,10 +1,20 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import validates
+from sqlalchemy_serializer import SerializerMixin
+from sqlalchemy import MetaData
 
-db = SQLAlchemy()
+
+metadata = MetaData(naming_convention={
+     "pk": "pk_%(table_name)s",
+    "fk": "fk_%(table_name)s_%(column_0_name)s",
+    "uq": "uq_%(table_name)s_%(column_0_name)s",
+    "ck": "ck_%(table_name)s_%(constraint_name)s"
+})
+
+db = SQLAlchemy(metadata=metadata)
 
 #Define the hero class that will be used to interact with the database.
-class Hero(db.Model):
+class Hero(db.Model,SerializerMixin):
     __tablename__ = 'heroes'
 
 #create the columns.
@@ -17,7 +27,7 @@ class Hero(db.Model):
 
 
 #Define the power class that will interact with the database
-class Power(db.Model):
+class Power(db.Model,SerializerMixin):
     __tablename__ = 'powers'
 
 
@@ -31,11 +41,8 @@ class Power(db.Model):
 
 
 #Define the HeroPower class that will interact with the database.
-class HeroPower(db.Model):
+class HeroPower(db.Model,SerializerMixin):
     __tablename__ = 'hero_powers'
-
-
-
 #create the columns.
     id = db.Column(db.Integer, primary_key=True)
     strength = db.Column(db.String, nullable=False)
