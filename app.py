@@ -17,6 +17,17 @@ def get_heroes():
     heroes = Hero.query.all()
     return jsonify([{"id": hero.id, "name": hero.name, "super_name": hero.super_name} for hero in heroes]), 200
 
+#delete a hero from the database.
+@app.route('/heroes/<int:id>', methods=['DELETE'])
+def delete_hero(id):
+    hero = Hero.query.get(id)
+    if not hero:
+        return jsonify({"error": "Hero not found"}), 404
+    
+    db.session.delete(hero)
+    db.session.commit()
+    return jsonify({"message": "Hero deleted"}), 200
+
 #gets a specific hero by their id and if it fails it returns a 404 error .
 @app.route('/heroes/<int:id>', methods=['GET'])
 def get_hero(id):
